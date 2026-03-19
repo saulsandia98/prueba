@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuestionario Aula Virtual 👨‍🏫</title>
+    <style>
+        :root {
+            --logo-cyan: #00bef1;
+            --logo-navy: #182a72;
+            --primary: var(--logo-cyan);
+            --btn-no: #ef4444;
+            --btn-maybe: #f59e0b;
+            --btn-yes: #10b981;
+        }
+
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; padding: 20px; 
+            display: flex; justify-content: center; align-items: center; 
+            min-height: 100vh;
+            background-color: var(--logo-navy);
+            background-image: 
+                linear-gradient(rgba(24, 42, 114, 0.95), rgba(24, 42, 114, 0.95)),
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300bef1' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM6 30V0h30v30H6zM0 6h2v24H0V6zm0 30h2v24H0V36zm0-18h2v6H0v-6zm36 30v2H6v-2h30zm0-18v2H6v-2h30zm0-18v2H6V6h30zM6 0v2h24V0H6zm0 18v2h24v-2H6zm0 18v2h24v-2H6zm0 18v2h24v-2H6zm30 0v-4h4v4h-4zm0-12V6h30v30H36v-6zm-6 6h4v4h-4v-4zm0 12h4v4h-4v-4zM6 6v24h30V6H6zm0-6h2v30H6V0z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            color: #1f2937;
+        }
+
+        .main-card {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .logo-container { margin-bottom: 20px; text-align: center; }
+        .logo-image { max-height: 90px; max-width: 250px; border-radius: 12px; }
+
+        h1 { color: var(--logo-cyan); margin-top: 5px; font-size: 2rem; margin-bottom: 5px; }
+        p.subtitle { color: #6b7280; margin-bottom: 30px; font-size: 1.1rem;}
+
+        .materia-container { margin-bottom: 30px; text-align: left; }
+        .section-label { font-weight: bold; margin-bottom: 12px; display: block; color: #4b5563; }
+        
+        .materia-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .materia-btn {
+            background: white; border: 2px solid #e5e7eb; border-radius: 14px;
+            padding: 14px; cursor: pointer; font-weight: 600; transition: 0.3s;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+
+        .materia-btn:hover { border-color: var(--logo-cyan); background: #f0f9ff; }
+        .materia-btn.selected { 
+            background: var(--logo-cyan); color: white; border-color: var(--logo-cyan);
+            transform: scale(1.02); box-shadow: 0 4px 10px rgba(0, 190, 241, 0.3);
+        }
+
+        .pregunta-block { margin-bottom: 35px; text-align: left; }
+        .pregunta-text { font-size: 1.2rem; font-weight: 600; color: #111827; margin-bottom: 15px; }
+
+        .btn-group { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+
+        .opt-btn {
+            border: 2px solid #e5e7eb; background: white; border-radius: 16px;
+            padding: 15px 5px; cursor: pointer; transition: all 0.2s ease-in-out;
+        }
+
+        .opt-btn.active-no { border-color: var(--btn-no); background-color: #fef2f2; }
+        .opt-btn.active-maybe { border-color: var(--btn-maybe); background-color: #fffbeb; }
+        .opt-btn.active-yes { border-color: var(--btn-yes); background-color: #ecfdf5; }
+
+        .emoji { font-size: 2.5rem; display: block; margin-bottom: 6px; }
+        .label { font-size: 0.95rem; font-weight: 700; color: #4b5563; }
+
+        #enviar {
+            background: var(--logo-cyan); color: white; border: none;
+            padding: 18px 30px; border-radius: 16px; font-size: 1.2rem;
+            font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px;
+            box-shadow: 0 4px 10px rgba(0, 190, 241, 0.3);
+        }
+        #enviar:disabled { background: #cbd5e1; cursor: not-allowed; }
+
+        .success-message { display: none; text-align: center; padding: 40px; }
+        .success-message h2 { color: var(--btn-yes); font-size: 2rem; }
+    </style>
+</head>
+<body>
+
+<div class="main-card" id="form-content">
+    <div class="logo-container">
+        <img src="https://seggtogob-my.sharepoint.com/:i:/g/personal/mi_profe_enlinea_9_seg_guanajuato_gob_mx/IQAMzeF2jzk7QqU1blMgRJ66AVxMogl6bPLF6t7xGA7x-ys?e=GgfJQW" alt="Logo" class="logo-image">
+    </div>
+
+    <h1>Cuestionario Aula Virtual 👨‍🏫</h1>
+    <p class="subtitle">¡Tus respuestas nos ayudan a mejorar! 🧪</p>
+
+    <div class="materia-container">
+        <span class="section-label">Selecciona tu clase de hoy:</span>
+        <div class="materia-grid">
+            <button class="materia-btn" onclick="selectMateria(this, 'Matemáticas')">➕ Matemáticas</button>
+            <button class="materia-btn" onclick="selectMateria(this, 'Español')">📖 Español</button>
+            <button class="materia-btn" onclick="selectMateria(this, 'Física')">⚡ Física</button>
+            <button class="materia-btn" onclick="selectMateria(this, 'Química')">🧪 Química</button>
+        </div>
+    </div>
+
+    <div class="pregunta-block">
+        <div class="pregunta-text">1. ¿Aprendiste algo nuevo hoy?</div>
+        <div class="btn-group" data-pregunta="p1">
+            <button class="opt-btn" onclick="selectOption(this, 'No mucho', 'no')"><span class="emoji">😕</span><span class="label">No mucho</span></button>
+            <button class="opt-btn" onclick="selectOption(this, 'Más o menos', 'maybe')"><span class="emoji">🤔</span><span class="label">Más o menos</span></button>
+            <button class="opt-btn" onclick="selectOption(this, 'Sí, bastante', 'yes')"><span class="emoji">💡</span><span class="label">Sí, bastante</span></button>
+        </div>
+    </div>
+
+    <div class="pregunta-block">
+        <div class="pregunta-text">2. ¿Te sentiste cómodo participando?</div>
+        <div class="btn-group" data-pregunta="p2">
+            <button class="opt-btn" onclick="selectOption(this, 'No mucho', 'no')"><span class="emoji">🤐</span><span class="label">No mucho</span></button>
+            <button class="opt-btn" onclick="selectOption(this, 'Más o menos', 'maybe')"><span class="emoji">✋</span><span class="label">Más o menos</span></button>
+            <button class="opt-btn" onclick="selectOption(this, 'Sí, bastante', 'yes')"><span class="emoji">🗣️</span><span class="label">Sí, bastante</span></button>
+        </div>
+    </div>
+
+    <div class="pregunta-block">
+        <div class="pregunta-text">3. ¿Los ejemplos fueron claros?</div>
+        <div class="btn-group" data-pregunta="p3">
+            <button class="opt-btn" onclick="selectOption(this, 'No mucho', 'no')"><span class="emoji">❌</span><span class="label">No mucho</span></button>
+            <button class="opt-btn" onclick="selectOption(this, 'Más o menos', 'maybe')"><span class="emoji">🤷</span><span class="label">Más o menos</span></button>
+            <button class="opt-btn" onclick="selectOption(this, 'Sí, bastante', 'yes')"><span class="emoji">✅</span><span class="label">Sí, bastante</span></button>
+        </div>
+    </div>
+
+    <button id="enviar" onclick="enviarRespuestas()">¡Enviar mis respuestas! 💫</button>
+</div>
+
+<div class="main-card success-message" id="success-content">
+    <span style="font-size: 5rem;">🎉</span>
+    <h2>¡Gracias por participar!</h2>
+    <p>Tus respuestas han sido enviadas correctamente al Excel.</p>
+</div>
+
+<script>
+    let respuestas = { materia: "", p1: "", p2: "", p3: "" };
+
+    function selectMateria(btn, nombre) {
+        document.querySelectorAll('.materia-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        respuestas.materia = nombre;
+    }
+
+    function selectOption(btn, valor, tipo) {
+        const grupo = btn.parentElement;
+        const preguntaId = grupo.getAttribute('data-pregunta');
+        grupo.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('active-no', 'active-maybe', 'active-yes'));
+        btn.classList.add(`active-${tipo}`);
+        respuestas[preguntaId] = valor;
+    }
+
+    async function enviarRespuestas() {
+        const urlFlow = "https://default132b9871e0254eada34d7bd5e7a383.b4.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/06fdbeaec3554453ba2c3d8c46fa2ae7/triggers/manual/paths/invoke?api-version=1"; // <--- PEGA TU URL AQUÍ
+        const btnEnviar = document.getElementById('enviar');
+
+        if (!respuestas.materia || !respuestas.p1 || !respuestas.p2 || !respuestas.p3) {
+            alert("⚠️ Por favor, responde todo antes de enviar.");
+            return;
+        }
+
+        btnEnviar.disabled = true;
+        btnEnviar.innerText = "Enviando... 🚀";
+
+        const payload = {
+            materia: respuestas.materia,
+            pregunta1: respuestas.p1,
+            pregunta2: respuestas.p2,
+            pregunta3: respuestas.p3,
+            alumno: "Anónimo (Aula Virtual)"
+        };
+
+        try {
+            const response = await fetch(urlFlow, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                document.getElementById('form-content').style.display = 'none';
+                document.getElementById('success-content').style.display = 'block';
+            } else {
+                throw new Error("Error en el servidor");
+            }
+        } catch (error) {
+            alert("😓 Error al enviar. Revisa que la URL de Power Automate sea la correcta.");
+            btnEnviar.disabled = false;
+            btnEnviar.innerText = "¡Enviar mis respuestas! 💫";
+        }
+    }
+</script>
+</body>
+</html>
