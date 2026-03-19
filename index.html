@@ -1,0 +1,28 @@
+async function enviarRespuestas() {
+        // ... (tus validaciones)
+
+        const urlFlow = "PEGA_AQUÍ_TU_URL_DE_POWER_AUTOMATE"; // La que copiaste en el paso anterior
+
+        const payload = {
+            materia: respuestas.materia,
+            pregunta1: respuestas.p1,
+            pregunta2: respuestas.p2,
+            pregunta3: respuestas.p3,
+            alumno: "Anónimo (Aula Virtual)"
+        };
+
+        try {
+            const response = await fetch(urlFlow, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                document.getElementById('form-content').style.display = 'none';
+                document.getElementById('success-content').style.display = 'block';
+            }
+        } catch (error) {
+            alert("Error al enviar");
+        }
+    }
